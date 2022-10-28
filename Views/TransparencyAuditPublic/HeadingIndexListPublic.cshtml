@@ -1,0 +1,65 @@
+﻿@model TransparencyAuditPublic.Models.HeadingIndexList
+@{
+    ViewBag.Title = "HeadingIndexListPublic";
+    //Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Heading Index List</title>
+    <script src="~/Themes/ckeditor/ckeditor.js"></script>
+    <style>
+        .card-body {
+            /*background-color: rgba(0, 0, 0, 0.03);*/
+            background-color: white;
+        }
+        .card-header {
+            /*background-color: rgba(0, 0, 0, 0.03);*/
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container px-5 py-5">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card mb-5 border border-0">
+                    <h4 class="card-header text-left border-bottom-0">Transparency Audit</h4>
+                    <div class="card-body">
+                        @foreach (var h1 in Model.H1_CATEGORYMASTER_List)
+                        {
+                            List<TransparencyAuditPublic.Models.H2_CATEGORYMASTER> h2List = Model.H2_CATEGORYMASTER_List.Where(x => x.H1_LINK == h1.H1_LINK).ToList();
+                            <ul style="text-align: left; list-style: none">
+                                <li style="font-size:17px;font-weight:500;">
+                                    <label>@h1.H1_LINK &nbsp;&nbsp; @h1.H1_NAME</label>
+                                    <ul style="text-align: left; list-style: none">
+                                        @foreach (var h2 in h2List)
+                                        {
+                                            List<TransparencyAuditPublic.Models.H3_CATEGORYMASTER> h3List = Model.H3_CATEGORYMASTER_List.Where(x => x.H1_LINK == h2.H1_LINK && x.H2_LINK == h2.H2_LINK).ToList();
+                                            <li style="font-size:17px;">
+                                                <label>@h2.H2_LINK &nbsp;&nbsp; @h2.H2_NAME</label>
+                                                <ul style="text-align: left; list-style: none">
+                                                    @foreach (var h3 in h3List)
+                                                    {
+                                                        <li style="font-size: 15px;">
+                                                            @h3.H3_LINK &nbsp;&nbsp;<a style="color: black;font-weight: 400;" href="@Url.Action("ViewHeadingPublic", "TransparencyAuditPublic", new RouteValueDictionary(new { H3_LINK = h3.H3_LINK,H3_ID=h3.H3_ID,H3_NAME= h3.H3_NAME}))">@h3.H3_NAME</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

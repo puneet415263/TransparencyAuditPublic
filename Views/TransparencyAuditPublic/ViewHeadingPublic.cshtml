@@ -1,0 +1,139 @@
+﻿@model TransparencyAuditPublic.Models.ViewHeadingModel
+
+@{
+    ViewBag.Title = "ViewHeadingPublic";
+    //Layout = null;
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Transparency Audit</title>
+    <script src="~/Themes/ckeditor/ckeditor.js"></script>
+    <style>
+        textarea {
+            resize: none;
+        }
+        .card-body {
+            /*background-color: rgba(0, 0, 0, 0.03);*/
+            background-color: white;
+        }
+        .card-header {
+            /*background-color: rgba(0, 0, 0, 0.03);*/
+            background-color: #053671;
+            color: white;
+        }
+        table thead {
+            background-color: #053671;
+            color:white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container px-5 py-5">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card mb-5 border border-0">
+                    @if ((Model.H3_LINK != null && Model.H3_LINK != "") && (Model.SUBJECT != null && Model.SUBJECT != ""))
+                    {
+                        <h4 class="card-header text-left rounded-0">@Html.DisplayFor(m => m.H3_LINK, new { @class = "form-control", @readonly = true, @id = "h3_LINK" })&nbsp;&nbsp;@Html.DisplayFor(m => m.SUBJECT, new { @class = "form-control", @readonly = true, @id = "subject" })</h4>
+                    }
+                    <div class="card-body">
+                        <form class="row g-3">
+                            @Html.HiddenFor(m => m.hdn_H3_ID, new { @id = "hdn_H3_ID" })
+                            @Html.HiddenFor(m => m.hdn_H3_LINK, new { @id = "hdn_H3_LINK" })
+                            @Html.HiddenFor(m => m.hdn_H3_GUID, new { @id = "hdn_H3_GUID" })
+                            @Html.HiddenFor(m => m.hdn_H3_CATEGORYDETAILS_ID, new { @id = "hdn_H3_CATEGORYDETAILS_ID" })
+                            @if (Model.TEXT != null && Model.TEXT != "")
+                            {
+                                @*<div class="col-12">
+                                    @Html.TextAreaFor(m => m.TEXT, new { @class = "form-control bg-light", @readonly = true, @rows = "2", @id = "text" })
+                                </div>*@
+                                <div class="col-12">
+                                    <table class="table table-bordered table-responsive">
+                                        <tr>
+                                            <td>@Html.Raw(Model.TEXT)</td>
+                                        </tr>
+                                    </table> 
+                                </div>
+                            }
+                            @if (Model.REMARKS != null && Model.REMARKS != "")
+                            {
+                        <div class="col-12">
+                            <label for="remarks" class="form-label" style="font-weight:700">Remarks</label>
+                            @*@Html.TextAreaFor(m => m.REMARKS, new { @class = "form-control bg-light", @readonly = true, @rows = "3", @id = "remarks" })*@
+                            <table class="table table-bordered table-responsive">
+                                <tr>
+                                    <td>@Html.Raw(Model.REMARKS)</td>
+                                </tr>
+                            </table>
+                        </div>
+                            }
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card border border-0">
+                    @if (Model.HEADING_FileUpload != null && Model.HEADING_FileUpload != "")
+            {
+                    <h4 class="card-header text-left rounded-0">@Html.DisplayFor(m => m.HEADING_FileUpload, new { @class = "heading form-control", @id = "heading" })</h4>
+            }
+                        
+                    <div class="card-body">
+                        <form class="row g-3">
+                           
+                            @if (Model.REMARKS_FileUpload != null && Model.REMARKS_FileUpload != "")
+                            {
+                                <div class="col-12">
+                                    <label for="remarks" class="form-label" style="font-weight:700">Remarks</label>
+                                    @Html.TextAreaFor(m => m.REMARKS_FileUpload, new { @class = "remarksForHeading form-control", @readonly = true, @rows = "3", @id = "remarksForHeading" })
+                                </div>
+                            }
+                            
+                            @if ((Model.H3_GUID != null) && (Model.UploadDetailsList != null))
+                            {
+                                <table class="table table-bordered table-responsive" id="RegularEmp">
+                                    <thead>
+                                        <tr>
+                                            <th>Sr. No.</th>
+                                            <th>Title</th>
+                                            <th>File</th>
+                                            <th>Publish Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{ int counter = 1;}
+                                        @foreach (var file in Model.UploadDetailsList)
+                                        {
+                                            <tr>
+                                                <td>@counter</td>
+                                                <td>@Html.DisplayFor(m => file.TITLE, new { @class = "title form-control", @id = "titleU" })</td>
+                                                <td>@Html.ActionLink("DownloadFile", "DownloadFile", "TransparencyAuditPublic", new { fileName = file.FILENAME }, new { target = "_blank" }) </td>
+                                                <td>@Html.DisplayFor(m => file.PUBLISHDATE, new { @class = "publishdate form-control", @id = "publishdateU", @type = "date" })</td>
+                                            </tr>
+                                            counter = counter + 1;
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                        </form>
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="row py-3">
+                    <div class="col-sm-5"></div>
+                    <div class="col-sm-7">
+                        <a href='@Url.Action("HeadingIndexListPublic", "TransparencyAuditPublic")' class="btn btn-primary">BACK</a>
+                    </div>
+                </div>
+            </div>*@
+        </div>
+    </div>
+    <script>
+    </script>
+</body>
+</html>
+
